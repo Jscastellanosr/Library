@@ -238,6 +238,7 @@ form.addEventListener('submit', (e) => {
     let pr;
     let E1 = false;
     let E2 = false;
+    let E3 = false;
     
     read.childNodes.forEach(node => {
         if(node.checked == true) r = node.value;
@@ -254,7 +255,9 @@ form.addEventListener('submit', (e) => {
     if(pr > p) E2 = true;
 
     if(!checkIfBookExist(title.value)) E1 = true;
-    if(checkForErrors(E1, E2)) return;
+    if (checkTitleLength(title.value)) E3 = true;
+    
+    if(checkForErrors(E1, E2, E3)) return;
 
     addBookStatus (false)
     newElement(t, a, p, r, pr)
@@ -310,10 +313,17 @@ function checkIfBookExist(titl) {
     return bRead;
 }
 
-function checkForErrors(E1, E2) {
-    if(E1 == true || E2 == true) {
+function checkTitleLength(title) {
+    if(title.length > 50) return true;
+}
+
+function checkForErrors(E1, E2, E3) {
+    if(E1 == true || E2 == true || E3 == true) {
         if(E1 == true) {
             nameError.textContent = "This book already exists in your list.";
+            nameError.style.color = 'red';
+        } else if(E3 == true) {
+            nameError.textContent = "Title must have less than 50 characters";
             nameError.style.color = 'red';
         };
         
