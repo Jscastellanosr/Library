@@ -1,0 +1,337 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+
+    background: linear-gradient(115deg, rgb(0, 255, 115) 10%, rgb(165, 204, 103) 90%);
+}
+
+.page {
+    width: 100vw;
+}
+
+.showForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+.popup.active {
+    height: 100%;
+    width: 100%;
+    background-color: rgb(110, 110, 110, 0.7);
+    position: fixed;
+    top: 0;
+}
+
+.window {
+    position: absolute;
+    top: -150%; /* we send the window where it cant be seen*/
+    left: 50%;    
+    opacity: 0; /* we make the window invisible*/
+    transform: translate(-50%, -50%) scale(1.25); /* we center the window and set the size that will be transitioning into the window when it is active*/ 
+    background-color: rgb(215, 245, 212);
+    padding: 20px 30px;
+    width: 300px;
+    box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    transition: top 400ms ease-in-out 0ms,
+                opacity 200ms ease-in-out 0ms,
+                transform 200ms ease-in-out 200ms;
+}
+
+.window.active {
+    top: 50%;
+    opacity: 1; /* we make the window visible when active */ 
+    transform: translate(-50%, -50%) scale(1); /* center again, and the size of the window when active is of scale: 1 */
+    transition: top 0ms ease-in-out 0ms,
+                opacity 200ms ease-in-out 0ms,
+                transform 200ms ease-in-out 0ms;
+}
+
+.closebtn {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+}
+
+.close {
+    background: #888;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    color: white;
+    line-height: 1px;
+    cursor: pointer;  /* changes the cursor to a hand when hovering this item*/
+}
+
+.form h2 {
+    text-align: center;
+    color: #222;
+    margin: 10px 0px 20px;
+    font-size: 25px;
+}
+
+.form .form-item {
+    margin: 15px 0px;
+    text-align: center;
+}
+
+.form .form-item label {
+    color: #222;
+
+}
+
+.form .form-item input[type="text"] {
+    margin-top: 5px;
+    display: block;
+    width: 100%;
+    height: 30px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgb(150, 150, 150);
+}
+
+.form .form-item input[type="number"] {
+    margin-top: 5px;
+    width: 30%;
+    height: 30px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgb(150, 150, 150);
+}
+
+.form .form-item input:focus {
+    outline: none !important;
+    border-color: rgb(2, 150, 21);
+    box-shadow: 0 0 10px #7af57a;
+    background-color: rgb(196, 196, 196);
+}
+
+#read {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+    height: 40px;
+    column-gap: 5px;
+}
+
+.space {
+    width: 5px;
+}
+
+#sbutton {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    width: 100%;
+    height: 35px;
+
+}
+
+.inner {
+    height: 100%;
+    width: 300%;
+    position: absolute;
+    left: -100%;
+    background: -webkit-linear-gradient(115deg, rgb(0, 255, 115) 10%, rgb(165, 204, 103) 90%);
+    z-index: -1;
+    transition: all 0.4s;
+}
+
+#sbutton:hover .inner {
+    left: 0;
+}
+
+#subm {
+    width: 100%;
+    height: 35px;
+    font-size: 15px;
+    font-weight: 600;
+    background: none;
+    color: rgb(26, 26, 26);
+    border:none;
+    cursor: pointer;
+    letter-spacing: 1px;
+}
+
+.table {
+    margin: 50px;
+    height: auto;
+    width: 90vw;
+    background-color: rgb(247, 156, 19);
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    column-gap: 10px;
+    row-gap: 20px;
+}
+
+.bookTab {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    padding: 15px;
+    height: 320px;
+    width: 250px;
+    background-color: rgb(2, 34, 14);
+    border-top-left-radius:40px;
+    border-top-right-radius: 40px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 2px 2px 10px 5px rgba(0, 0, 0, 0.397);
+}
+
+.bookBar {
+    display: flex;
+    justify-content: space-between;
+    margin: -15px -15px 5px -15px;
+    overflow: hidden;
+    height: 100px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+}
+
+
+.bookBar button {
+    height: 30px;
+    width: 50%;
+    border: none;
+    border-radius: 0px;
+    font-size: 15px;
+    font-family:'Times New Roman', Times, serif;
+}
+
+.bookInfo {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 70%;
+    max-height: 90%;
+    overflow-y: auto;
+}
+
+
+.title {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: white;
+    font-weight: 800;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.author {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: rgb(63, 126, 0);
+    font-style: italic;
+}
+
+.pages {
+    font-weight: 600;
+    color: rgb(247, 232, 99);
+    margin-bottom: 10px;
+}
+
+
+
+
+
+.edit:hover {
+    background-color: chartreuse;
+    cursor: pointer;
+    color: black;
+}
+
+.edit{
+     background-color: rgb(62, 124, 0);
+     font-weight: 900px;color: white;
+}
+
+.remove:hover {
+    background-color: rgb(165, 116, 43);
+    cursor: pointer;
+    color: black;
+}
+
+.remove{
+    background-color: rgb(136, 82, 0);
+    color: white;
+}
+
+.progHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+
+.addp{
+    font-size: 20px;
+    padding: 0px 1px;
+    width: 20px;
+    background-color: limegreen;
+}
+
+.remop {
+    font-size: 20px;
+    padding: 0px 1px;
+    width: 20px;
+    color: white;
+    background-color: rgb(109, 1, 10);
+}
+
+
+
+.finished {
+    color: rgb(46, 223, 46);
+}
+
+.incomplete {
+    color: rgb(243, 139, 20);
+}
+.unread {
+    color: red;
+}
+
+
+.unknownProg {
+    color: rgb(145, 145, 145);
+}
+
+
+.modifying {
+    color: blue;
+}
+
+
+.progressBar {
+    background: red;
+    height: 15px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.completed {
+    background-color: chartreuse;
+    height: 15px;
+    border-radius: 5px;
+}
+
+.unknown {
+    background-color: #888;
+}
+

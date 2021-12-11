@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="script.js" defer></script>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+
+    <div class="page">
+            
+        <div class="showForm">
+            <button id="showF">Add book</button>
+        </div>
+        <div>
+            <div class="table"></div>
+        </div>
+        <button id="butt">testbutton</button>
+    </div>
+    
+    <div class="popup">
+        <div class="window">
+            <div class="closebtn">
+                <div class="close">&times;</div>
+            </div>
+            <form class="form">
+                <h2>Add book</h2>
+                <div class="form-item">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" placeholder="Book title" required>
+                    <div id="nameError"></div>
+                </div>
+                <div class="form-item">
+                    <label for="author">Author:</label>
+                    <input type="text" id="author" placeholder="Author name" required>
+                </div>
+                <div class="form-item">
+                    <label for="pages">Pages: </label>
+                    <input type="number" min="1" id="pages" placeholder="ur mum gay" required>
+                </div>
+                <div class="form-item" id="read">
+                        <input id="yesRead" type="radio" name="readbox" value="read" required/>Read 
+                        <div class="space"></div>
+                        <input id="notRead" type="radio" name="readbox" value="not read" required/>Not read 
+                </div>
+                <div class="form-item" id="readPages"></div>
+                <div class="form-item" id="sbutton">
+                    <div class="inner"></div>
+                    <input type="submit" id="subm"/>
+                </div>
+                    
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+</body>
+</html>
