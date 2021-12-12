@@ -26,9 +26,11 @@ function Books(name, author, pages, read, progress) {
     this.pages = parseInt(pages)
     this.read = read
     this.progress = progress
+    this.index = index;
     this.info = function () {
         return(this.name + " by " + this.author + ", " + this.pages + " pages" + ", " + this.read + "")
     }
+    index++;
 }
 
 Books.prototype.addToNode = function(node, array, text, appendTo) {
@@ -51,7 +53,9 @@ Books.prototype.appendNode = function(node, node2) {
     node2.appendChild(node)
 }
 
+/* create and update nodes*/
 Books.prototype.updateTable = function () {
+
 
     t = this.name;
     a = this.author;
@@ -75,6 +79,9 @@ Books.prototype.updateTable = function () {
         if(this.progress == null) EpagesR.value = 0;
         else EpagesR.value = this.progress;
         objTemp = this;
+        console.log(this)
+
+        console.log(table.childNodes[table.childNodes.length - 1])
     
         popUpStatus (true, '#editBook', '#edit');
     })
@@ -210,6 +217,8 @@ Books.prototype.remAddButtons = function(Enode, op, bookRead, completed) {
 
 let myLibrary = [];
 let objTemp;
+let tabTemp;
+let index = 0;
 
 myLibrary.push(new Books("The Hobbit", "J.R.R Tolkien", 295, "read", 295));
 myLibrary.push(new Books("The Goodfather The Goodfather The Goodfather", "J.R.R Tolkien", 800, "not read", 755));
@@ -291,7 +300,7 @@ Eform.addEventListener('submit', (e) => {
     e.preventDefault();
     console.log(objTemp);
     console.log(this);
-    objTemp.name = "asdefvgh";
+    objTemp.name = Etitle.value;
     popUpStatus (false, '#editBook', '#edit');
 });
 
