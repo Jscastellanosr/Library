@@ -130,7 +130,7 @@ body {
     width: 5px;
 }
 
-#sbutton {
+#sbutton, #Ebutton {
     position: relative;
     overflow: hidden;
     border-radius: 10px;
@@ -138,6 +138,12 @@ body {
     height: 35px;
 
 }
+
+#sbutton:hover .inner,
+#Ebutton:hover .inner  {
+    left: 0;
+}
+
 
 .inner {
     height: 100%;
@@ -149,11 +155,8 @@ body {
     transition: all 0.4s;
 }
 
-#sbutton:hover .inner {
-    left: 0;
-}
 
-#subm {
+#subm, #ed {
     width: 100%;
     height: 35px;
     font-size: 15px;
@@ -258,6 +261,15 @@ body {
 .edit{
      background-color: rgb(62, 124, 0);
      font-weight: 900px;color: white;
+}
+
+#EreadSection {
+    display: flex;
+    align-items: center;
+}
+
+#EreadSection input {
+    width: 80%;
 }
 
 .remove:hover {

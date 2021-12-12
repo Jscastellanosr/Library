@@ -1,12 +1,19 @@
 let subm = document.querySelector("#subm");
-let form = document.querySelector('.form')
+let ABform = document.querySelector('#ABform')
 let title = document.querySelector("#title");
+let Etitle = document.querySelector("#Etitle");
 let author = document.querySelector("#author");
+let Eauthor = document.querySelector("#Eauthor");
 let pages = document.querySelector("#pages");
+let Epages = document.querySelector("#Epages");
+let EpagesR = document.querySelector("#EpagesR");
 let table = document.querySelector('.table')
 let read = document.querySelector('#read')
 let addB = document.querySelector('#showF')
-let closebtn = document.querySelector('.close')
+let ABclosebtn = document.querySelector('#ABclose')
+let Eclose = document.querySelector('#Eclose')
+let Rclose = document.querySelector('#Rclose')
+let edit = document.querySelector('#Eform')
 let tabs = document.querySelector('.table')
 let notReadButton = document.querySelector('#notRead')
 let readButton = document.querySelector('#yesRead')
@@ -61,9 +68,21 @@ Books.prototype.updateTable = function () {
     let headBar = document.createElement('div');
 
     let edit = document.createElement('button');
+    edit.addEventListener('click', () => {
+        Etitle.value = this.name;
+        Eauthor.value = this.author;
+        Epages.value = this.pages;
+        if(this.progress == null) EpagesR.value = 0;
+        else EpagesR.value = this.progress;
+        objTemp = this;
+    
+        popUpStatus (true, '#editBook', '#edit');
+    })
     this.addToNode(edit, ['edit'], "Edit", headBar);
 
+
     let btn = document.createElement('button');
+    btn.addEventListener('click', () => popUpStatus (true, '#removeBook', '#remove'))
     this.addToNode(btn, ['remove'],'Remove', headBar);
 
     this.addToNode(headBar, ['bookBar'], undefined, newBook);
@@ -190,28 +209,30 @@ Books.prototype.remAddButtons = function(Enode, op, bookRead, completed) {
 }
 
 let myLibrary = [];
+let objTemp;
 
 myLibrary.push(new Books("The Hobbit", "J.R.R Tolkien", 295, "read", 295));
 myLibrary.push(new Books("The Goodfather The Goodfather The Goodfather", "J.R.R Tolkien", 800, "not read", 755));
 myLibrary.push(new Books("Lorem Ipsum is simply dummy text of the printing and typesetting industry", "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", 20, "not read", undefined));
 
 document.addEventListener('DOMContentLoaded', () => {
-    myLibrary.forEach(book => {
-        book.updateTable();
-    })
+    myLibrary.forEach(book => book.updateTable());
 })
 
 addB.addEventListener('click', () => {
     clearFields();
-    addBookStatus (true);
+    popUpStatus (true, '#addBook', '#newBook');
     title.focus();
 });
 
+ABclosebtn.addEventListener('click', () => popUpStatus (false, '#addBook', '#newBook'));
+
+Eclose.addEventListener('click', () => popUpStatus (false, '#editBook', '#edit'));
+
+Rclose.addEventListener('click', () => popUpStatus (false, '#removeBook', '#remove'))
 
 
-closebtn.addEventListener('click', () => {
-    addBookStatus (false)
-})
+
 
 title.addEventListener('keydown', () => {
     nameError.textContent = "";
@@ -227,7 +248,8 @@ readButton.addEventListener('click', () => {
     readPagesDiv.innerHTML = "";
 })
 
-form.addEventListener('submit', (e) => {
+ABform.addEventListener('submit', (e) => {
+
     e.preventDefault();
     console.log(myLibrary)
 
@@ -259,9 +281,19 @@ form.addEventListener('submit', (e) => {
     
     if(checkForErrors(E1, E2, E3)) return;
 
-    addBookStatus (false)
+    popUpStatus (false, '#addBook', '#newBook')
     newElement(t, a, p, r, pr)
+ 
 })
+
+
+Eform.addEventListener('submit', (e) => {
+    e.preventDefault();
+    console.log(objTemp);
+    console.log(this);
+    objTemp.name = "asdefvgh";
+    popUpStatus (false, '#editBook', '#edit');
+});
 
 function clearFields() {
     title.value = "";
@@ -274,15 +306,15 @@ function clearFields() {
 
 };
 
-function addBookStatus (status) {
+function popUpStatus (status, selector1, selector2) {
     if (status == true) {
-        document.querySelector('.window').classList.add('active')
-        document.querySelector('.popup').classList.add('active')
+        document.querySelector(selector1).classList.add('active')
+        document.querySelector(selector2).classList.add('active')
 
         
     }else {
-        document.querySelector('.window').classList.remove('active')
-        document.querySelector('.popup').classList.remove('active')
+        document.querySelector(selector1).classList.remove('active')
+        document.querySelector(selector2).classList.remove('active')
 
     }
      
