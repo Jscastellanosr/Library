@@ -323,7 +323,7 @@ addB.addEventListener('click', () => {
     title.focus();
 });
 
-ABclosebtn.addEventListener('click', () => popUpStatus (false, '#addBook', '#newBook'), 'active');
+ABclosebtn.addEventListener('click', () => popUpStatus (false, '#newBook', '#addBook', 'active'));
 
 Eclose.addEventListener('click', () => popUpStatus (false, '#editBook', '#edit', 'active'));
 
