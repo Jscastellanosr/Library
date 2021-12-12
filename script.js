@@ -26,11 +26,124 @@ function Books(name, author, pages, read, progress) {
     this.pages = parseInt(pages)
     this.read = read
     this.progress = progress
-    this.index = index;
+    this.index = index
     this.info = function () {
         return(this.name + " by " + this.author + ", " + this.pages + " pages" + ", " + this.read + "")
     }
     index++;
+    /* create and update nodes*/
+
+    this.updateTable = function () {
+
+
+        t = this.name;
+        a = this.author;
+        p = this.pages;
+        r = this.read;
+        pr = this.progress;
+
+        console.log(`${p}:${r}:${pr}`)
+
+        let newBook = document.createElement('div');
+        this.addToNode(newBook, ['bookTab']);
+    
+    /* head division */
+        let headBar = document.createElement('div');
+
+        let edit = document.createElement('button');
+        edit.addEventListener('click', () => {
+            Etitle.value = this.name;
+            Eauthor.value = this.author;
+            Epages.value = this.pages;
+            if(this.progress == null) EpagesR.value = 0;
+            else EpagesR.value = this.progress;
+            objTemp = this;
+            console.log(this.Ttitle.textContent)
+
+            console.log(table.childNodes[table.childNodes.length - 1])
+        
+            popUpStatus (true, '#editBook', '#edit');
+        })
+        this.addToNode(edit, ['edit'], "Edit", headBar);
+
+
+        let btn = document.createElement('button');
+        btn.addEventListener('click', () => popUpStatus (true, '#removeBook', '#remove'))
+        this.addToNode(btn, ['remove'],'Remove', headBar);
+
+        this.addToNode(headBar, ['bookBar'], undefined, newBook);
+
+
+    /* info body*/    
+        let bookInfo = document.createElement('div');
+        
+
+        let bookName = document.createElement('div');
+        this.Ttitle = bookName;
+        this.addToNode(bookName, ['title'], t, bookInfo);
+
+        let bookAuthor = document.createElement('div');
+        this.Tauthor = bookAuthor;
+        this.addToNode(bookAuthor, ['author'], a, bookInfo);
+
+        let bookPages = document.createElement('div');
+        this.addToNode(bookPages, ['pages'], p, bookInfo);
+
+        this.addToNode(bookInfo, ['bookInfo'], undefined, newBook);
+
+
+    /* progression info*/
+        let progHeader = document.createElement('div');
+        this.addToNode(progHeader, ['progHeader']);
+
+
+        let bookRead = document.createElement('div');
+        if (r == "read"){
+            this.addToNode(bookRead, ['finished'], `Progress: ${this.pages}/${this.pages}`);
+        } else {
+            if(pr == undefined) {
+                this.addToNode(bookRead, ["unknownProg"], `Progress: Unknown`);
+            }else {
+                this.addToNode(bookRead, undefined, `Progress: ${pr}/${p}`);
+                (pr == p)?this.addToNode(bookRead, ['finished']):this.addToNode(bookRead, ['incomplete']);
+            };
+        };
+        progHeader.appendChild(bookRead); 
+
+        
+
+
+    /* progress bar*/   
+        let prog = document.createElement('div');
+        this.addToNode(prog, ['progressBar']);
+        let completed = document.createElement('div');
+        if(r == "not read" && pr == undefined) this.addToNode(completed, ['unknown']);
+        else this.addToNode(completed, ['completed']);
+        this.addToNode(completed, ['completed']);
+        completed.style.width = `${pr * 100 / p}%`
+
+    /* progress buttons */
+
+        let addRemovePages = document.createElement('div');
+        let removep = document.createElement('button')
+        this.remAddButtons(removep, "--", bookRead, completed) 
+        this.addToNode(removep, ['remop'], "-", addRemovePages);
+        let addp = document.createElement('button');
+        this.remAddButtons(addp, "++", bookRead, completed)  
+        this.addToNode(addp, ['addp'], "+", addRemovePages);
+
+    /* add buttons to progHeader and then progHeader to the book */
+        progHeader.appendChild(addRemovePages);
+        newBook.appendChild(progHeader)
+    /* append complete bar to progression bar and then progression bar to the book tab*/
+        prog.appendChild(completed);
+        newBook.appendChild(prog);
+
+    /* append to div*/
+        tabs.appendChild(newBook);
+    };
+
+    
 }
 
 Books.prototype.addToNode = function(node, array, text, appendTo) {
@@ -53,114 +166,7 @@ Books.prototype.appendNode = function(node, node2) {
     node2.appendChild(node)
 }
 
-/* create and update nodes*/
-Books.prototype.updateTable = function () {
 
-
-    t = this.name;
-    a = this.author;
-    p = this.pages;
-    r = this.read;
-    pr = this.progress;
-
-    console.log(`${p}:${r}:${pr}`)
-
-    let newBook = document.createElement('div');
-    this.addToNode(newBook, ['bookTab']);
-  
-/* head division */
-    let headBar = document.createElement('div');
-
-    let edit = document.createElement('button');
-    edit.addEventListener('click', () => {
-        Etitle.value = this.name;
-        Eauthor.value = this.author;
-        Epages.value = this.pages;
-        if(this.progress == null) EpagesR.value = 0;
-        else EpagesR.value = this.progress;
-        objTemp = this;
-        console.log(this)
-
-        console.log(table.childNodes[table.childNodes.length - 1])
-    
-        popUpStatus (true, '#editBook', '#edit');
-    })
-    this.addToNode(edit, ['edit'], "Edit", headBar);
-
-
-    let btn = document.createElement('button');
-    btn.addEventListener('click', () => popUpStatus (true, '#removeBook', '#remove'))
-    this.addToNode(btn, ['remove'],'Remove', headBar);
-
-    this.addToNode(headBar, ['bookBar'], undefined, newBook);
-
-
-/* info body*/    
-    let bookInfo = document.createElement('div');
-    
-
-    let bookName = document.createElement('div');
-    this.addToNode(bookName, ['title'], t, bookInfo);
-
-    let bookAuthor = document.createElement('div');
-    this.addToNode(bookAuthor, ['author'], a, bookInfo);
-
-    let bookPages = document.createElement('div');
-    this.addToNode(bookPages, ['pages'], p, bookInfo);
-
-    this.addToNode(bookInfo, ['bookInfo'], undefined, newBook);
-
-
-/* progression info*/
-    let progHeader = document.createElement('div');
-    this.addToNode(progHeader, ['progHeader']);
-
-
-    let bookRead = document.createElement('div');
-    if (r == "read"){
-        this.addToNode(bookRead, ['finished'], `Progress: ${this.pages}/${this.pages}`);
-    } else {
-        if(pr == undefined) {
-            this.addToNode(bookRead, ["unknownProg"], `Progress: Unknown`);
-        }else {
-            this.addToNode(bookRead, undefined, `Progress: ${pr}/${p}`);
-            (pr == p)?this.addToNode(bookRead, ['finished']):this.addToNode(bookRead, ['incomplete']);
-        };
-    };
-    progHeader.appendChild(bookRead); 
-
-    
-
-
- /* progress bar*/   
-    let prog = document.createElement('div');
-    this.addToNode(prog, ['progressBar']);
-    let completed = document.createElement('div');
-    if(r == "not read" && pr == undefined) this.addToNode(completed, ['unknown']);
-    else this.addToNode(completed, ['completed']);
-    this.addToNode(completed, ['completed']);
-    completed.style.width = `${pr * 100 / p}%`
-
-/* progress buttons */
-
-    let addRemovePages = document.createElement('div');
-    let removep = document.createElement('button')
-    this.remAddButtons(removep, "--", bookRead, completed) 
-    this.addToNode(removep, ['remop'], "-", addRemovePages);
-    let addp = document.createElement('button');
-    this.remAddButtons(addp, "++", bookRead, completed)  
-    this.addToNode(addp, ['addp'], "+", addRemovePages);
-
-/* add buttons to progHeader and then progHeader to the book */
-    progHeader.appendChild(addRemovePages);
-    newBook.appendChild(progHeader)
-/* append complete bar to progression bar and then progression bar to the book tab*/
-    prog.appendChild(completed);
-    newBook.appendChild(prog);
-
-/* append to div*/
-    tabs.appendChild(newBook);
-};
 
 
 Books.prototype.remAddButtons = function(Enode, op, bookRead, completed) {
@@ -300,7 +306,8 @@ Eform.addEventListener('submit', (e) => {
     e.preventDefault();
     console.log(objTemp);
     console.log(this);
-    objTemp.name = Etitle.value;
+
+    objTemp.Ttitle.textContent = Etitle.value;
     popUpStatus (false, '#editBook', '#edit');
 });
 
