@@ -10,6 +10,7 @@ let EpagesR = document.querySelector("#EpagesR");
 let table = document.querySelector('.table');
 let read = document.querySelector('#read');
 let addB = document.querySelector('#showF');
+let addB2 = document.querySelector('#showF2');
 let ABclosebtn = document.querySelector('#ABclose');
 let Eclose = document.querySelector('#Eclose');
 let Rclose = document.querySelector('#Rclose');
@@ -24,191 +25,194 @@ let EpageError = document.querySelector('#EpageError');
 let remYes = document.querySelector('#remYes');
 let remNo = document.querySelector('#remNo');
 
-function Books(name, author, pages, read, progress) {
-    this.name = name
-    this.author = author
-    this.pages = parseInt(pages)
-    this.read = read
-    this.progress = progress
-    this.index = index
-    this.info = function () {
-        return(this.name + " by " + this.author + ", " + this.pages + " pages" + ", " + this.read + "")
-    }
-    index++;
-    /* create and update nodes*/
-
-    this.updateTable = function () {
-
-
-        t = this.name;
-        a = this.author;
-        p = this.pages;
-        r = this.read;
-        pr = this.progress;
-
-        console.log(`${p}:${r}:${pr}`)
-
-        let newBook = document.createElement('div');
-        this.TAB = newBook;
-        this.addToNode(newBook, ['bookTab']);
+class Books {
+    constructor(name, author, pages, read, progress){
+        this.name = name
+        this.author = author
+        this.pages = parseInt(pages)
+        this.read = read
+        this.progress = progress
+        this.index = index
+        this.info = function () {
+            return(this.name + " by " + this.author + ", " + this.pages + " pages" + ", " + this.read + "")
+        }
+        index++;
+        /* create and update nodes*/
     
-    /* head division */
-        let headBar = document.createElement('div');
-
-        let edit = document.createElement('button');
-        edit.addEventListener('click', () => {
-            /* fill spaces in empty edit form*/
-            Etitle.value = this.name;
-            Eauthor.value = this.author;
-            Epages.value = this.pages;
-            if(this.progress == null) EpagesR.value = 0;
-            else EpagesR.value = this.progress;
-            objTemp = this;
-
-            console.log(table.childNodes[table.childNodes.length - 1])
+        this.createTab = function () {
+    
+    
+            let t = this.name;
+            let a = this.author;
+            let p = this.pages;
+            let r = this.read;
+            let pr = this.progress;
+    
+            console.log(`${p}:${r}:${pr}`)
+    
+            let newBook = document.createElement('div');
+            this.TAB = newBook;
+            this.addToNode(newBook, ['bookTab']);
         
-            popUpStatus (true, '#editBook', '#edit', 'active');
-        })
-        this.addToNode(edit, ['edit'], "Edit", headBar);
-
-
-        let btn = document.createElement('button');
-        btn.addEventListener('click', () => {
-            objTemp = this;
-            popUpStatus (true, '#removeBook', '#remove', 'activeR')
-        });
-        this.addToNode(btn, ['remove'],'Remove', headBar);
-
-        this.addToNode(headBar, ['bookBar'], undefined, newBook);
-
-
-    /* info body*/    
-        let bookInfo = document.createElement('div');
-        
-
-        let bookName = document.createElement('div');
-        this.Ttitle = bookName;
-        this.addToNode(bookName, ['title'], undefined, bookInfo);
-
-        let bookAuthor = document.createElement('div');
-        this.Tauthor = bookAuthor;
-        this.addToNode(bookAuthor, ['author'], undefined, bookInfo);
-
-        let bookPages = document.createElement('div');
-        this.Tpages = bookPages;
-        this.addToNode(bookPages, ['pages'], undefined, bookInfo);
-
-        this.addToNode(bookInfo, ['bookInfo'], undefined, newBook);
-
-
-    /* progression info*/
-        let progHeader = document.createElement('div');
-        this.addToNode(progHeader, ['progHeader']);
-
-
-        let bookRead = document.createElement('div');
-        this.TbookRead = bookRead;
-
-        
-        progHeader.appendChild(bookRead); 
-
-        
-    /* progress bar*/   
-        let prog = document.createElement('div');
-        this.addToNode(prog, ['progressBar']);
-        let completed = document.createElement('div');
-        this.Tcompleted = completed;
-        if(r == "not read" && pr == undefined) this.addToNode(completed, ['unknown']);
-        else this.addToNode(completed, ['completed']);
-        this.addToNode(completed, ['completed']);
-        
-
-    /* progress buttons */
-
-        let addRemovePages = document.createElement('div');
-        let removep = document.createElement('button')
-        this.remAddButtons(removep, "--", bookRead, completed) 
-        this.addToNode(removep, ['remop'], "-", addRemovePages);
-        let addp = document.createElement('button');
-        this.remAddButtons(addp, "++", bookRead, completed)  
-        this.addToNode(addp, ['addp'], "+", addRemovePages);
-
-    /* add buttons to progHeader and then progHeader to the book */
-        progHeader.appendChild(addRemovePages);
-        newBook.appendChild(progHeader)
-    /* append complete bar to progression bar and then progression bar to the book tab*/
-        prog.appendChild(completed);
-        newBook.appendChild(prog);
-
-    /* append to div*/
-        tabs.appendChild(newBook);
-    };
-
-
-    this.updt = function (u) {
-        this.Ttitle.textContent = this.name;
-        this.Tauthor.textContent = this.author;
-        this.Tpages.textContent = this.pages;
-     
-
-        if(u == 0) {
-            if (this.read == "read"){
-                this.addToNode(this.TbookRead, ['finished'], `Progress: ${this.pages}/${this.pages}`);
-            } else {
-                if(this.progress == undefined) {
-                    this.addToNode(this.TbookRead, ["unknownProg"], `Progress: Unknown`);
-                }else {
-                    this.TbookRead.textContent = `Progress: ${this.progress}/${this.pages}`;
-                    (this.progress == this.pages)?this.addToNode(this.TbookRead, ['finished']):this.addToNode(this.TbookRead, ['incomplete']);
+        /* head division */
+            let headBar = document.createElement('div');
+    
+            let edit = document.createElement('button');
+            edit.addEventListener('click', () => {
+                /* fill empty fields in edit form the the book-s info*/
+                Etitle.value = this.name;
+                Eauthor.value = this.author;
+                Epages.value = this.pages;
+                if(this.progress == null) EpagesR.value = 0;
+                else EpagesR.value = this.progress;
+                objTemp = this;
+    
+                console.log(table.childNodes[table.childNodes.length - 1])
+            
+                popUpStatus (true, '#editBook', '#edit', 'active');
+            })
+            this.addToNode(edit, ['edit'], "Edit", headBar);
+    
+    
+            let btn = document.createElement('button');
+            btn.addEventListener('click', () => {
+                objTemp = this;
+                popUpStatus (true, '#removeBook', '#remove', 'activeR')
+            });
+            this.addToNode(btn, ['remove'],'Remove', headBar);
+    
+            this.addToNode(headBar, ['bookBar'], undefined, newBook);
+    
+    
+        /* info body*/    
+            let bookInfo = document.createElement('div');
+            
+    
+            let bookName = document.createElement('div');
+            this.Ttitle = bookName;
+            this.addToNode(bookName, ['title'], undefined, bookInfo);
+    
+            let bookAuthor = document.createElement('div');
+            this.Tauthor = bookAuthor;
+            this.addToNode(bookAuthor, ['author'], undefined, bookInfo);
+    
+            let bookPages = document.createElement('div');
+            this.Tpages = bookPages;
+            this.addToNode(bookPages, ['pages'], undefined, bookInfo);
+    
+            this.addToNode(bookInfo, ['bookInfo'], undefined, newBook);
+    
+    
+        /* progression info*/
+            let progHeader = document.createElement('div');
+            this.addToNode(progHeader, ['progHeader']);
+    
+    
+            let bookRead = document.createElement('div');
+            this.TbookRead = bookRead;
+    
+            
+            progHeader.appendChild(bookRead); 
+    
+            
+        /* progress bar*/   
+            let prog = document.createElement('div');
+            this.addToNode(prog, ['progressBar']);
+            let completed = document.createElement('div');
+            this.Tcompleted = completed;
+            if(r == "not read" && pr == undefined) this.addToNode(completed, ['unknown']);
+            else this.addToNode(completed, ['completed']);
+            this.addToNode(completed, ['completed']);
+            
+    
+        /* progress buttons */
+    
+            let addRemovePages = document.createElement('div');
+            let removep = document.createElement('button')
+            this.remAddButtons(removep, "--", bookRead, completed) 
+            this.addToNode(removep, ['remop'], "-", addRemovePages);
+            let addp = document.createElement('button');
+            this.remAddButtons(addp, "++", bookRead, completed)  
+            this.addToNode(addp, ['addp'], "+", addRemovePages);
+    
+        /* add buttons to progHeader and then progHeader to the book */
+            progHeader.appendChild(addRemovePages);
+            newBook.appendChild(progHeader)
+        /* append complete bar to progression bar and then progression bar to the book tab*/
+            prog.appendChild(completed);
+            newBook.appendChild(prog);
+    
+        /* append to div*/
+            tabs.appendChild(newBook);
+        };
+    
+        /* update... u=0 update new node, u=1 update existing node*/
+        this.updt = function (u) {
+            this.Ttitle.textContent = this.name;
+            this.Tauthor.textContent = this.author;
+            this.Tpages.textContent = this.pages;
+         
+    
+            if(u == 0) {
+                if (this.read == "read"){
+                    this.addToNode(this.TbookRead, ['finished'], `Progress: ${this.pages}/${this.pages}`);
+                } else {
+                    if(this.progress == undefined) {
+                        this.addToNode(this.TbookRead, ["unknownProg"], `Progress: Unknown`);
+                    }else {
+                        this.TbookRead.textContent = `Progress: ${this.progress}/${this.pages}`;
+                        (this.progress == this.pages)?this.addToNode(this.TbookRead, ['finished']):this.addToNode(this.TbookRead, ['incomplete']);
+                    };
                 };
-            };
-            this.Tcompleted.style.width = `${this.progress * 100 / this.pages}%`
-        } else {
-
-            if (this.pages == this.progress){
-                
-                this.addToNode(this.TbookRead, ['finished'], `Progress: ${this.pages}/${this.pages}`);
-                this.TbookRead.classList.remove('unread');
-                this.TbookRead.classList.remove('incomplete')
-                this.TbookRead.classList.remove('unknownProg')
-                this.TbookRead.classList.add('finished')
-
-                this.Tcompleted.classList.remove('unknown');
-                this.addToNode(this.Tcompleted, ['completed']);
                 this.Tcompleted.style.width = `${this.progress * 100 / this.pages}%`
             } else {
-                
-                if(this.progress == 0) {
-
-                    this.addToNode(this.TbookRead, ["unknownProg"], `Progress: Unknown`);
-
-                    this.TbookRead.classList.remove('modifying')
-                    this.TbookRead.classList.remove('finished')
-                    this.TbookRead.classList.add('unknownProg')
-
-                    this.Tcompleted.classList.remove('complete');
-                    this.addToNode(this.Tcompleted, ['unknown']);
-                    this.Tcompleted.style.width = `100%`;
-                }else {
-
+    
+                if (this.pages == this.progress){
                     
-                    this.TbookRead.textContent = `Progress: ${this.progress}/${this.pages}`;
-
-                    this.TbookRead.classList.remove('unread')
-                    this.TbookRead.classList.remove('finished')
+                    this.addToNode(this.TbookRead, ['finished'], `Progress: ${this.pages}/${this.pages}`);
+                    this.TbookRead.classList.remove('unread');
+                    this.TbookRead.classList.remove('incomplete')
                     this.TbookRead.classList.remove('unknownProg')
-                    this.TbookRead.classList.add('incomplete')
-
+                    this.TbookRead.classList.add('finished')
+    
                     this.Tcompleted.classList.remove('unknown');
                     this.addToNode(this.Tcompleted, ['completed']);
-                    (this.progress == this.pages)?this.addToNode(this.TbookRead, ['finished']):this.addToNode(this.TbookRead, ['incomplete']);
-                    this.addToNode(this.Tcompleted, ['completed']);
                     this.Tcompleted.style.width = `${this.progress * 100 / this.pages}%`
+                } else {
+                    
+                    if(this.progress == 0) {
+    
+                        this.addToNode(this.TbookRead, ["unknownProg"], `Progress: Unknown`);
+    
+                        this.TbookRead.classList.remove('modifying')
+                        this.TbookRead.classList.remove('finished')
+                        this.TbookRead.classList.add('unknownProg')
+    
+                        this.Tcompleted.classList.remove('complete');
+                        this.addToNode(this.Tcompleted, ['unknown']);
+                        this.Tcompleted.style.width = `100%`;
+                    }else {
+    
+                        
+                        this.TbookRead.textContent = `Progress: ${this.progress}/${this.pages}`;
+    
+                        this.TbookRead.classList.remove('unread')
+                        this.TbookRead.classList.remove('finished')
+                        this.TbookRead.classList.remove('unknownProg')
+                        this.TbookRead.classList.add('incomplete')
+    
+                        this.Tcompleted.classList.remove('unknown');
+                        this.addToNode(this.Tcompleted, ['completed']);
+                        (this.progress == this.pages)?this.addToNode(this.TbookRead, ['finished']):this.addToNode(this.TbookRead, ['incomplete']);
+                        this.addToNode(this.Tcompleted, ['completed']);
+                        this.Tcompleted.style.width = `${this.progress * 100 / this.pages}%`
+                    };
                 };
-            };
+            }
+            
         }
-        
     }
+    
     
 }
 
@@ -241,8 +245,6 @@ Books.prototype.remAddButtons = function(Enode, op, bookRead, completed) {
         if (op == "++") this.progress++;
         else this.progress--;
 
-
-    
     /* pages and progress equal*/
         if(this.progress == this.pages) {
             console.log('1');
@@ -307,17 +309,40 @@ let tabTemp;
 let index = 0;
 
 myLibrary.push(new Books("The Hobbit", "J.R.R Tolkien", 295, "read", 295));
+myLibrary.push(new Books("The Hobbit 2", "J.R.R Tolkien", 245, "read", 201));
 myLibrary.push(new Books("The Goodfather", "J.R.R Tolkien", 800, "not read", 755));
-myLibrary.push(new Books("Lorem Ipsum is simply dummy text of the printing and typesetting industry", "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", 20, "not read", undefined));
+myLibrary.push(new Books("Lorem Ipsum is simply dummy text of the printing and typesetting industry", "Lorem Ipsum has been the industry's standard", 20, "not read", undefined));
 
 document.addEventListener('DOMContentLoaded', () => {
     myLibrary.forEach(book => {
-        book.updateTable();
+        book.createTab();
         book.updt(0);
     })
 })
 
+window.addEventListener('resize', () => {
+    if (this.innerWidth < 600) {
+        console.log(this.innerHeight)
+        document.querySelector('.tb').style.flexDirection = "column";
+        document.querySelector('.tb').style.alignItems = "stretch";
+        
+        document.querySelector('.infoPan').classList.add("infoPanA");
+    }else {
+        document.querySelector('.tb').style.flexDirection = "row";
+        document.querySelector('.infoPan').classList.remove("infoPanA");
+
+    }
+
+
+})
+
 addB.addEventListener('click', () => {
+    clearFields();
+    popUpStatus (true, '#addBook', '#newBook', 'active');
+    title.focus();
+});
+
+addB2.addEventListener('click', () => {
     clearFields();
     popUpStatus (true, '#addBook', '#newBook', 'active');
     title.focus();
@@ -442,6 +467,31 @@ remNo.addEventListener('click', () => {
     popUpStatus (false, '#removeBook', '#remove', 'activeR')
 })
 
+document.querySelector('#searchBox').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    let results = [];
+
+    myLibrary.forEach(book => {
+
+
+        if (book.name.toLowerCase().includes(document.querySelector('#srchInpt').value.toLowerCase())) {
+            table.innerHTML = "";
+            results.push(book);
+        }
+    })
+
+    if(results.length > 0){
+        results.forEach(result => table.appendChild(result.TAB))
+    }else if (document.querySelector('#srchInpt').value == "") {
+            myLibrary.forEach(book => {
+                table.appendChild(book.TAB)
+            })
+    }else alert('no results found');
+
+
+})
+
 function clearFields() {
     title.value = "";
     author.value = "";
@@ -543,7 +593,7 @@ function checkForErrors(E1, E2, E3, p) {
 function newElement(t, a, p, r, pr) {
 
     addBookToArray(t, a, p, r, pr);
-    myLibrary[myLibrary.length - 1].updateTable();
+    myLibrary[myLibrary.length - 1].createTab();
     myLibrary[myLibrary.length - 1].updt(0);
     console.log(myLibrary)
 
@@ -572,8 +622,4 @@ function addBookToArray(t, a, p, r, pr) {
 
 
 
-let butt = document.querySelector('#butt');
-butt.addEventListener('click', () => {
-    console.log(myLibrary)
-})
 

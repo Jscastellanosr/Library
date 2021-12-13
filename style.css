@@ -5,17 +5,23 @@
 }
 
 body {
-display: flex;
+    display: flex;
 
-justify-content: center;
+    justify-content: center;
     background: linear-gradient(115deg, rgb(0, 255, 115) 10%, rgb(165, 204, 103) 90%);
 }
 
 .page, body, html {
-    min-width: 600px;
+    min-width: 620px;
+    min-height: 100vh;
+    
 }
 .page {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: 0px 10px;
+    width: 80vw;
 }
 
 .page h1 {
@@ -24,9 +30,9 @@ justify-content: center;
 }
 
 .showForm {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    position: fixed;
+    top: 95%;
+    left: 90%;
     transform: translate(-50%, -50%);
 }
 
@@ -200,26 +206,43 @@ justify-content: center;
 
 
 
+
+
+.tb {
+    display: flex;
+    width: 100%;
+    
+}
+
+.fooo {
+    width: 100%;
+    min-width: 470px;
+}
+
 .toolBar {
+    display: flex;
+    justify-content: space-around;
     background-color: #222;
     height: 20px;
 }
 
-.tb {
-    display: flex;
-    width: 80vw;
-    min-width: 600px;
-}
-
-.fooo {
-    width: 75%;
-    min-width: 470px;
+.toolBar label {
+    color: white;
 }
 
 .infoPan{
-    min-width: 15vh;
+
+    min-width: 15vw;
     width: 25%;
     background-color: blue;
+    min-height: 80vh;
+    
+}
+.infoPanA{
+    min-height: 10vh;
+    min-width: none;
+    width: 100%;
+    max-height: 50px;
 }
 
 .table {
@@ -430,3 +453,8 @@ justify-content: center;
 
 
 
+.footer {
+    margin-top: 20px;
+    min-height: 30px;
+    background-color: yellow;
+}
