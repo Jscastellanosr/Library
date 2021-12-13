@@ -5,13 +5,17 @@
 }
 
 body {
+display: flex;
 
+justify-content: center;
     background: linear-gradient(115deg, rgb(0, 255, 115) 10%, rgb(165, 204, 103) 90%);
 }
 
+.page, body, html {
+    min-width: 570px;
+}
 .page {
-    width: 100vw;
-    padding: 0px 100px;
+    padding: 0px 10px;
 }
 
 .page h1 {
@@ -194,14 +198,21 @@ body {
     letter-spacing: 1px;
 }
 
+.fooo {
+    width: 75%;
+}
+
 .toolBar {
     background-color: #222;
     height: 20px;
 }
 
 .tb {
-    width: 1070px;
+    display: flex;
+    width: 80vw;
+    min-width: 570px;
 }
+
 
 .table {
     padding: 20px;
@@ -215,6 +226,8 @@ body {
     row-gap: 20px;
 }
 
+
+
 .bookTab {
     display: flex;
     flex-direction: column;
@@ -222,7 +235,7 @@ body {
     text-align: center;
     padding: 15px;
     height: 320px;
-    width: 250px;
+    width: 200px;
     background-color: rgb(2, 34, 14);
     border-top-left-radius:40px;
     border-top-right-radius: 40px;
@@ -406,3 +419,10 @@ body {
     background-color: #888;
 }
 
+
+
+.infoPan{
+    min-width: 15vh;
+    width: 25%;
+    background-color: blue;
+}
