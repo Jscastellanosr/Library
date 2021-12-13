@@ -12,7 +12,7 @@ justify-content: center;
 }
 
 .page, body, html {
-    min-width: 570px;
+    min-width: 600px;
 }
 .page {
     padding: 0px 10px;
@@ -198,9 +198,7 @@ justify-content: center;
     letter-spacing: 1px;
 }
 
-.fooo {
-    width: 75%;
-}
+
 
 .toolBar {
     background-color: #222;
@@ -210,9 +208,19 @@ justify-content: center;
 .tb {
     display: flex;
     width: 80vw;
-    min-width: 570px;
+    min-width: 600px;
 }
 
+.fooo {
+    width: 75%;
+    min-width: 470px;
+}
+
+.infoPan{
+    min-width: 15vh;
+    width: 25%;
+    background-color: blue;
+}
 
 .table {
     padding: 20px;
@@ -221,8 +229,9 @@ justify-content: center;
     background-color: rgb(247, 156, 19);
     display: flex;
     align-items: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
-    column-gap: 10px;
+    column-gap: 20px;
     row-gap: 20px;
 }
 
@@ -421,8 +430,3 @@ justify-content: center;
 
 
 
-.infoPan{
-    min-width: 15vh;
-    width: 25%;
-    background-color: blue;
-}
