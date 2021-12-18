@@ -78,6 +78,7 @@ class Books {
             btn.addEventListener('click', () => {
                 objTemp = this;
                 popUpStatus (true, '#removeBook', '#remove', 'activeR')
+                updtInfo();
             });
             this.addToNode(btn, ['remove'],'Remove', headBar);
     
@@ -242,17 +243,28 @@ Books.prototype.appendNode = function(node, node2) {
 Books.prototype.remAddButtons = function(Enode, op, bookRead, completed) {
     
     Enode.addEventListener('mousedown', () => {  /*............................we first add the javascript properties of the node before passing it to the function */
-        if (op == "++") this.progress++;
-        else this.progress--;
+        if (op == "++") {
+            this.progress++; 
+            
+        }else this.progress--;
+        
 
     /* pages and progress equal*/
         if(this.progress == this.pages) {
             console.log('1');
+            this.read = "read";
             bookRead.classList.remove('incomplete');
             this.addToNode(bookRead, ['finished']);
             this.addToNode(bookRead, ['modifying'], `Progress: ${this.progress}/${this.pages}`);
+            
+            booksRead++;
+            pagesRead++;  
+            
+            
+            
     /* progress less than pages and more than 0 */
         } else if (this.progress < this.pages && this.progress > 0){
+            this.read = "not read"
             console.log('2');
             bookRead.classList.remove('unread')
             bookRead.classList.remove('unknownProg')
@@ -260,6 +272,13 @@ Books.prototype.remAddButtons = function(Enode, op, bookRead, completed) {
             this.addToNode(bookRead, ['modifying'], `Progress: ${this.progress}/${this.pages}`);
             completed.classList.remove('unknown');
             completed.classList.add('completed');
+            if(pagesRead <= totalPages) {
+                if(op == "++")pagesRead++;
+                else {
+                    pagesRead--;
+                    if (this.progress == this.pages - 1) booksRead--;
+                }  
+            }
     /* progress greater than pages*/
         } else if (this.progress > this.pages) {
             console.log('3');
@@ -291,16 +310,18 @@ Books.prototype.remAddButtons = function(Enode, op, bookRead, completed) {
                 this.addToNode(bookRead, ['unread']);
                 this.addToNode(bookRead, ['modifying'], `Progress: ${this.progress = 0}/${this.pages}`);
                 completed.classList.remove('unknown')
+                pagesRead--;
 
             }
         }
         
         completed.style.width = `${this.progress * 100 / this.pages}%`
+        updtInfo();
     })
     Enode.addEventListener('mouseup', () => {  /*............................we first add the javascript properties of the node before passing it to the function */
-
             bookRead.classList.remove('modifying');
-    })   
+    });
+    
 }
 
 let myLibrary = [];
@@ -309,7 +330,7 @@ let tabTemp;
 let index = 0;
 
 myLibrary.push(new Books("The Hobbit", "J.R.R Tolkien", 295, "read", 295));
-myLibrary.push(new Books("The Hobbit 2", "J.R.R Tolkien", 245, "read", 201));
+myLibrary.push(new Books("The Hobbit 2", "J.R.R Tolkien", 245, "not read", 201));
 myLibrary.push(new Books("The Goodfather", "J.R.R Tolkien", 800, "not read", 755));
 myLibrary.push(new Books("Lorem Ipsum is simply dummy text of the printing and typesetting industry", "Lorem Ipsum has been the industry's standard", 20, "not read", undefined));
 
@@ -318,6 +339,9 @@ document.addEventListener('DOMContentLoaded', () => {
         book.createTab();
         book.updt(0);
     })
+
+    refreshInfo()
+    updtInfo()
 })
 
 window.addEventListener('resize', () => {
@@ -391,10 +415,12 @@ ABform.addEventListener('submit', (e) => {
 
     if(r == "read") {
         pr = p;
+        booksRead++;
     }else {
         console.log(readPagesDiv.querySelector('input').value)
         if (readPagesDiv.querySelector('input').value == "") pr = undefined;
         else pr = parseInt(readPagesDiv.querySelector('input').value);
+        if(r == "read") booksRead++;
     }
 
     if(pr > p) E2 = true;
@@ -402,10 +428,13 @@ ABform.addEventListener('submit', (e) => {
     if(!checkIfBookExist(title.value)) E1 = true;
     if (checkTitleLength(title.value)) E3 = true;
     
+    checkForErrors();
+    
     if(checkForErrors(E1, E2, E3, 1)) return;
 
     popUpStatus (false, '#addBook', '#newBook', 'active')
     newElement(t, a, p, r, pr)
+
  
 })
 
@@ -434,6 +463,9 @@ Eform.addEventListener('submit', (e) => {
     objTemp.updt(1);
 
     popUpStatus (false, '#editBook', '#edit', 'active');
+
+    refreshInfo();
+    updtInfo();
     console.log(myLibrary)
 });
 
@@ -455,11 +487,16 @@ remYes.addEventListener('click', () => {
     console.log(objTemp.index + ":" + `${objTemp.index + 1}`)
     myLibrary.splice(objTemp.index, 1);
     console.log(myLibrary);
-    myLibrary.forEach(book => book.index--);
+    myLibrary.forEach(book => {
+        if(book.index > objTemp.index) book.index--;
+    });
     tabs.removeChild(objTemp.TAB);
     
     console.log(tabs.childNodes)
     popUpStatus (false, '#removeBook', '#remove', 'activeR')
+    refreshInfo();
+    updtInfo();
+    console.log(myLibrary)
 })
 
 remNo.addEventListener('click', () => {
@@ -490,6 +527,15 @@ document.querySelector('#searchBox').addEventListener('submit', (e) => {
     }else alert('no results found');
 
 
+})
+
+document.querySelector('#rst').addEventListener('click', () => {
+    table.innerHTML = "";
+    document.querySelector('#srchInpt').value = "";
+    myLibrary.forEach(book => {
+
+        table.appendChild(book.TAB);
+    })
 })
 
 function clearFields() {
@@ -592,10 +638,20 @@ function checkForErrors(E1, E2, E3, p) {
 
 function newElement(t, a, p, r, pr) {
 
+    if(pr == p) {
+        r == "read";
+        booksRead++;
+    }
+
     addBookToArray(t, a, p, r, pr);
     myLibrary[myLibrary.length - 1].createTab();
     myLibrary[myLibrary.length - 1].updt(0);
     console.log(myLibrary)
+
+    totalBooks++;
+    totalPages += myLibrary[myLibrary.length - 1].pages;
+    if(myLibrary[myLibrary.length - 1].progress != undefined) pagesRead += myLibrary[myLibrary.length - 1].progress;
+    updtInfo()
 
 }
 
@@ -604,8 +660,32 @@ function addBookToArray(t, a, p, r, pr) {
     myLibrary.push(newBook);
 }
 
+let totalBooks = 0;
+let booksRead = 0;
+let pagesRead = 0;
+let totalPages = 0;
 
 
+function refreshInfo() {
+    totalBooks = 0;
+    booksRead = 0;
+    pagesRead = 0;
+    totalPages = 0;
+    myLibrary.forEach(book => {
+        totalBooks++;
+        if(book.progress == undefined) book.progress = 0;
+        pagesRead += book.progress;
+        if(book.read == "read") booksRead++;
+        totalPages += book.pages;
+    })
+}
+
+function updtInfo() {
+    document.querySelector('#TBook').textContent = totalBooks;
+    document.querySelector('#TBookR').textContent = booksRead;
+    document.querySelector('#IPageR').textContent = pagesRead;
+    document.querySelector('#IPageT').textContent = totalPages;    
+}
 
 
 
